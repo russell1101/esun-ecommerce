@@ -1,0 +1,44 @@
+package com.esun.ecommerce.core.entity;
+
+import jakarta.persistence.*;
+import lombok.Data;
+import java.time.LocalDateTime;
+
+@Data
+@Entity
+@Table(name = "admin")
+public class Admin {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "admin_id")
+    private Integer adminId;
+
+    @Column(name = "username", unique = true, nullable = false, length = 50)
+    private String username;
+
+    @Column(name = "password", nullable = false, length = 255)
+    private String password;
+
+    @Column(name = "status", nullable = false)
+    private Byte status;
+
+    @Column(name = "inptime", nullable = false, updatable = false)
+    private LocalDateTime inptime;
+
+    @Column(name = "updtime", nullable = false)
+    private LocalDateTime updtime;
+
+    @PrePersist
+    protected void onCreate() {
+        inptime = updtime = LocalDateTime.now();
+        if (status == null) {
+            status = 1;
+        }
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updtime = LocalDateTime.now();
+    }
+}
