@@ -25,6 +25,16 @@ request.interceptors.response.use(
         auth.token = res.data.token
       })
     }
+    // token 過期或無效 → 清除登入狀態並導回登入頁
+    if (res.data?.success === -999) {
+      sessionStorage.clear()
+      const currentPath = window.location.pathname
+      const loginPath = currentPath.startsWith('/admin') ? '/admin/login' : '/login'
+      if (currentPath !== loginPath) {
+        window.location.href = loginPath
+      }
+    }
+
     return res.data
   },
   (err) => Promise.reject(err)
