@@ -26,8 +26,8 @@ docker compose up --build
 
 | 角色 | 帳號 | 密碼 |
 |------|------|------|
-| 管理員 | admin | admin1234 |
-| 會員 | member1 | member1234 |
+| 管理員 | admin | test123 |
+| 會員 | member1 | test123 |
 
 ## API 文件
 

@@ -2,6 +2,7 @@ package com.esun.ecommerce.core.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 import java.time.LocalDateTime;
 
 @Data
@@ -17,6 +18,7 @@ public class Member {
     @Column(name = "username", unique = true, nullable = false, length = 50)
     private String username;
 
+    @ToString.Exclude
     @Column(name = "password", nullable = false, length = 255)
     private String password;
 

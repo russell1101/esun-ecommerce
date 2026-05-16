@@ -3,6 +3,7 @@ package com.esun.ecommerce.core.exception;
 import com.esun.ecommerce.core.util.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -34,9 +35,9 @@ public class GlobalExceptionHandler {
     }
 
     // 捕捉樂觀鎖異常
-    @ExceptionHandler(jakarta.persistence.OptimisticLockException.class)
+    @ExceptionHandler(ObjectOptimisticLockingFailureException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ApiResponse<?> handleOptimisticLockException(jakarta.persistence.OptimisticLockException ex) {
+    public ApiResponse<?> handleOptimisticLockException(ObjectOptimisticLockingFailureException ex) {
         log.warn("商品版本衝突（樂觀鎖）: {}", ex.getMessage());
         return ApiResponse.error(-1, "商品已搶先被修改，請重新整理後再試。");
     }
