@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @Entity
@@ -12,7 +11,11 @@ import java.util.List;
 public class Order {
 
     @Id
-    @Column(name = "order_id", length = 20)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "order_sn")
+    private Integer orderSn;
+
+    @Column(name = "order_id", unique = true, nullable = false, length = 20)
     private String orderId;
 
     @Column(name = "member_id", nullable = false)
@@ -36,19 +39,11 @@ public class Order {
     @Column(name = "updtime", nullable = false)
     private LocalDateTime updtime;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
-    private List<OrderDetail> orderDetails;
-
     @PrePersist
     protected void onCreate() {
         inptime = updtime = LocalDateTime.now();
-        if (payStatus == null) {
-            payStatus = 0;
-        }
-        if (orderStatus == null) {
-            orderStatus = 1;
-        }
+        if (payStatus == null) payStatus = 0;
+        if (orderStatus == null) orderStatus = 1;
     }
 
     @PreUpdate

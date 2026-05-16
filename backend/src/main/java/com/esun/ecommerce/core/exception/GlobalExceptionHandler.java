@@ -3,6 +3,7 @@ package com.esun.ecommerce.core.exception;
 import com.esun.ecommerce.core.util.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -40,6 +41,14 @@ public class GlobalExceptionHandler {
     public ApiResponse<?> handleOptimisticLockException(ObjectOptimisticLockingFailureException ex) {
         log.warn("商品版本衝突（樂觀鎖）: {}", ex.getMessage());
         return ApiResponse.error(-1, "商品已搶先被修改，請重新整理後再試。");
+    }
+
+    // 捕捉 Request Body 遺失或格式錯誤
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponse<?> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
+        log.warn("Request body 解析失敗: {}", ex.getMessage());
+        return ApiResponse.error(-2, "請求格式錯誤");
     }
 
     // 捕捉其他所有未處理的異常

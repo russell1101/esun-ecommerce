@@ -31,8 +31,15 @@ public class SecurityConfig {
                         .authenticationEntryPoint(customAuthenticationEntryPoint)
                 )
                 .authorizeHttpRequests(auth -> auth
+                        // 公開端點：前台 auth + 後台 admin 登入
                         .requestMatchers("/api/front/auth/**", "/api/admin/auth/login").permitAll()
+                        // 公開端點：前台商品清單
                         .requestMatchers(HttpMethod.GET, "/api/front/products/available").permitAll()
+                        // 後台端點：需要admin角色
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        // 前台訂單端點：需要member角色
+                        .requestMatchers("/api/front/orders/**").hasRole("MEMBER")
+                        // 其他已認證端點
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

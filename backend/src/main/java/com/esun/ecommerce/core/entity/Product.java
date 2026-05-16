@@ -11,7 +11,11 @@ import java.time.LocalDateTime;
 public class Product {
 
     @Id
-    @Column(name = "product_id", length = 10)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_sn")
+    private Integer productSn;
+
+    @Column(name = "product_id", unique = true, nullable = false, length = 10)
     private String productId;
 
     @Column(name = "product_name", nullable = false, length = 100)
@@ -39,12 +43,8 @@ public class Product {
     @PrePersist
     protected void onCreate() {
         inptime = updtime = LocalDateTime.now();
-        if (status == null) {
-            status = 1;
-        }
-        if (version == null) {
-            version = 0;
-        }
+        if (status == null) status = 1;
+        if (version == null) version = 0;
     }
 
     @PreUpdate

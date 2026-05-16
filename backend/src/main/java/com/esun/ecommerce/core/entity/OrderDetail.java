@@ -15,6 +15,12 @@ public class OrderDetail {
     @Column(name = "order_item_sn")
     private Integer orderItemSn;
 
+    @Column(name = "order_sn", nullable = false)
+    private Integer orderSn;
+
+    @Column(name = "product_sn", nullable = false)
+    private Integer productSn;
+
     @Column(name = "order_id", nullable = false, length = 20)
     private String orderId;
 
