@@ -5,12 +5,13 @@ services:
     image: mysql:8.0
     container_name: esun-mysql
     restart: unless-stopped
-    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-time-zone=+08:00
     environment:
       MYSQL_ROOT_PASSWORD: root1234
       MYSQL_DATABASE: esun_ecommerce
       MYSQL_USER: esun
       MYSQL_PASSWORD: test123
+      TZ: Asia/Taipei
     ports:
       - "3306:3306"
     volumes:
@@ -36,6 +37,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/esun_ecommerce?serverTimezone=Asia/Taipei&useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false
       SPRING_DATASOURCE_USERNAME: esun
       SPRING_DATASOURCE_PASSWORD: test123
+      TZ: Asia/Taipei
     depends_on:
       mysql:
         condition: service_healthy
